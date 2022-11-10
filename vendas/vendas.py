@@ -1,5 +1,4 @@
 from kivy.app import App
-
 from kivy.uix.boxlayout import BoxLayout
 
 class VendasWindow(BoxLayout):
@@ -9,7 +8,6 @@ class VendasWindow(BoxLayout):
 class VendasApp(App):
     def build(self):
         return VendasWindow()
-
 
 if __name__=='__main__':
     VendasApp().run()

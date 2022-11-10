@@ -2,8 +2,25 @@
 #:import hex kivy.utils.get_color_from_hex
 
 
+# Criando os botões ==============================================
+# Botões griados para serem utilizados posteriormente no códeigo.
+#
+<Btn@Button>:
+    background_nomral: ''
+    background_color: hex('#FFFFFF')
 
+<Btn_verde@Button>:
+    background_nomral: ''
+    background_color: hex('#009900')
+
+<Btn_vermelho@Button>:
+    background_nomral: ''
+    background_color: hex('#FF0000')
+# --------------------------------------------------------------
+
+# Representa a tela inteira.
 <VendasWindow>:
+    # Canvas ==============================================================
     canvas.before:
         Color:
             rgba: hex('#4B0082')
@@ -11,38 +28,137 @@
             size:self.size
             pos:self.pos
     orientation: 'vertical'
+    # Fim Canvas -----------------------------------------------------------
 
+
+    # Box cabeçalho ========================================================
+    # Mostra o nome co usuário e data e hora.
+    #
     BoxLayout:
         size_hint_y: .1
+        spacing: .5
         Label:
-            size_hint_x: .4
-            text:'Seja Bem Vindo : '
-        
-        Label:
-            size_hint_x: .4
-            text:'Data De Hoje'
+            id: lbl_bemvindo
+            size_hint_x: .25
+            text:'Seja Bem Vindo: '
+            color: hex('#FFFF00')
 
-        Button:
+        # Grid Data/Hora ===================================================
+        # Contem as informações de data e hora.
+        #
+        GridLayout:
+            size_hint_x: .25
+            rows: 2
+            cols: 2
+            Label:
+                text: 'Data: '
+                color: hex('#FFFF00')
+            
+            Label:
+                id: data
+                color: hex('#FFFF00')
+            
+            Label:
+                text: 'Hora'
+                color: hex('#FFFF00')
+            
+            Label:
+                id: hora
+                color: hex('#FFFF00')
+        # Grid Data/Hora ---------------------------------------------------
+
+        # Label para separar os botões.
+        Label:
+            size_hint_x: .2
+
+        # Botão do administrador.
+        Btn:
+            id: admin_btn
             size_hint_x: .15
-            text:'Administrador'
-
-        Button:
+            text:'Admin'
+            on_release: root.admin()
+        
+        # Botão para saír.
+        Btn_vermelho:
+            id: sair_btn
             size_hint_x: .15
             text:'Sair'
+            on_release: root.sair()
+    # Fim Box cabeçalho --------------------------------------------------
 
+
+    # Box central ========================================================
+    # Contem todas as informações.
+    #
     BoxLayout:
         canvas.before:
             Color:
-                rgba: hex('#00FF00')
+                rgba: hex('#331155')
             Rectangle:
-                size:self.size
-                pos:self.pos
-        size_hint_y: .90
-        Label:
-            text:'KIVY 2'
+                size: self.size
+                pos: self.pos
+        size_hint_y: .87
+        spacing: .5
 
+        # Box inter central 1 =============================================
+        BoxLayout:
+            size_hint_x: .7
+            orientation: 'vertical'
+            spacing: .5
+
+            # Grid interno
+            GridLayout:
+                spacing: .5
+                size_hint_y: .1
+                rows: 2
+                cols: 2
+
+                Label:
+                    text: 'Pesquisar Por Código'
+                
+                Label:
+                    text: 'Pesquisar Por Nome'
+                
+                TextInput:
+                    id: pesquisar_codigo
+                
+                TextInput:
+                    id: pesquisar_nome
+
+            BoxLayout:
+                size_hint_y: .8
+                orientation: 'vertical'
+            
+            BoxLayout:
+                size_hint_y: .1
+                spacing: .5
+
+                Btn_vermelho:
+                    text: 'Deletar'
+                
+                Btn_verde:
+                    text: 'Atualizar Quantidade'
+        # Fim Box inter central 1 -----------------------------------------
+
+
+        # Box inter central 2 =============================================
+        BoxLayout:
+            size_hint_x: .3
+            canvas.before:
+                Color:
+                    rgba: hex('#A020F0')
+                Rectangle:
+                    size:self.size
+                    pos:self.pos
+        # Fim Box inter central 2 ----------------------------------------
+    # Fim Box central ----------------------------------------------------
+
+
+    # Box rodapé =========================================================
+    # Criuma borda na parte de baixo da tela e os direitos.
+    # 
     BoxLayout:
-        size_hint_y: .05
-        Label:
-            text:'KIVY 3' 
+        size_hint_y: .03
+    # Fim Box rodapé -----------------------------------------------------
+
             
