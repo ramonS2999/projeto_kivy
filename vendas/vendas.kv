@@ -1,0 +1,48 @@
+
+#:import hex kivy.utils.get_color_from_hex
+
+
+
+<VendasWindow>:
+    canvas.before:
+        Color:
+            rgba: hex('#4B0082')
+        Rectangle:
+            size:self.size
+            pos:self.pos
+    orientation: 'vertical'
+
+    BoxLayout:
+        size_hint_y: .1
+        Label:
+            size_hint_x: .4
+            text:'Seja Bem Vindo : '
+        
+        Label:
+            size_hint_x: .4
+            text:'Data De Hoje'
+
+        Button:
+            size_hint_x: .15
+            text:'Administrador'
+
+        Button:
+            size_hint_x: .15
+            text:'Sair'
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: hex('#00FF00')
+            Rectangle:
+                size:self.size
+                pos:self.pos
+        size_hint_y: .90
+        Label:
+            text:'KIVY 2'
+
+    BoxLayout:
+        size_hint_y: .05
+        Label:
+            text:'KIVY 3' 
+            
