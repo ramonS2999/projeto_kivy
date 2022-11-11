@@ -6,28 +6,77 @@
 # Botões griados para serem utilizados posteriormente no códeigo.
 #
 <Btn@Button>:
-    background_nomral: ''
+    background_normal: ''
     background_color: hex('#FFFFFF')
 
 <Btn_verde@Button>:
-    background_nomral: ''
+    background_normal: ''  
     background_color: hex('#009900')
 
 <Btn_vermelho@Button>:
-    background_nomral: ''
+    background_normal: ''  
     background_color: hex('#FF0000')
 # --------------------------------------------------------------
+<Label_azul@Label>:
+    canvas.before:
+		Color:
+			rgba: hex('#0080FF')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+<SelectableBoxLayout>:
+    canvas.before:
+        Color:
+            rgba: hex('#C9F3EF') if self.selected else hex('#F0F0F0')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        
+    Label:
+        id: _has_cod
+        size_hint_x: .1
+        color: (0,0,0,1)
+    Label:
+        id: _artigo_produto
+        size_hint_x: .5
+        color: (0,0,0,1)
+    Label:
+        id: _quantidade
+        size_hint_x: .1
+        color: (0,0,0,1)
+    Label:
+        id: _preco_por_produto
+        size_hint_x: .15
+        color: (0,0,0,1)
+    Label:
+        id: _preco
+        size_hint_x: .15
+        color: (0,0,0,1)
+
+    
+<RV>:
+    viewclass: 'SelectableBoxLayout'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(36)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+
 
 # Representa a tela inteira.
 <VendasWindow>:
     # Canvas ==============================================================
     canvas.before:
-        Color:
-            rgba: hex('#4B0082')
-        Rectangle:
-            size:self.size
-            pos:self.pos
-    orientation: 'vertical'
+		Color:
+			rgba: hex('#4B0082')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	orientation: 'vertical'
     # Fim Canvas -----------------------------------------------------------
 
 
@@ -35,55 +84,47 @@
     # Mostra o nome co usuário e data e hora.
     #
     BoxLayout:
-        size_hint_y: .1
-        spacing: .5
-        Label:
-            id: lbl_bemvindo
-            size_hint_x: .25
-            text:'Seja Bem Vindo: '
-            color: hex('#FFFF00')
+		size_hint_y: .1
+		spacing: .5
+		Label:
+			id: bemvindo_label
+			size_hint_x: .25
+			text: 'Seja Bem Vindos: '
+			color: hex('#FFFF00')
 
         # Grid Data/Hora ===================================================
         # Contem as informações de data e hora.
         #
-        GridLayout:
-            size_hint_x: .25
-            rows: 2
-            cols: 2
-            Label:
-                text: 'Data: '
-                color: hex('#FFFF00')
-            
-            Label:
-                id: data
-                color: hex('#FFFF00')
-            
-            Label:
-                text: 'Hora'
-                color: hex('#FFFF00')
-            
-            Label:
-                id: hora
-                color: hex('#FFFF00')
+		GridLayout:
+			size_hint_x: .25
+			rows: 2
+			cols: 2
+			Label: 
+				text: 'Data: '
+				color: hex('#FFFF00')
+			Label: 
+				id: data
+				color: hex('#FFFF00')
+			Label: 
+				text: 'Hora: '
+				color: hex('#FFFF00')
+			Label: 
+				id: hora
+				color: hex('#FFFF00')
         # Grid Data/Hora ---------------------------------------------------
 
-        # Label para separar os botões.
-        Label:
-            size_hint_x: .2
-
-        # Botão do administrador.
-        Btn:
-            id: admin_btn
-            size_hint_x: .15
-            text:'Admin'
-            on_release: root.admin()
-        
-        # Botão para saír.
-        Btn_vermelho:
-            id: sair_btn
-            size_hint_x: .15
-            text:'Sair'
-            on_release: root.sair()
+		Label: 
+			size_hint_x: .2
+		Btn:
+			id: admin_boton
+			size_hint_x: .15
+			text: 'Administrador'
+			on_release: root.admin()
+		Btn_vermelho: 
+			id: signout_boton
+			size_hint_x: .15
+			text: 'Sair'
+			on_release: root.signout()
     # Fim Box cabeçalho --------------------------------------------------
 
 
@@ -91,65 +132,122 @@
     # Contem todas as informações.
     #
     BoxLayout:
-        canvas.before:
-            Color:
-                rgba: hex('#331155')
-            Rectangle:
-                size: self.size
-                pos: self.pos
-        size_hint_y: .87
-        spacing: .5
+		canvas.before:
+			Color:
+				rgba: hex('#331155')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .87
+		spacing: .5
 
         # Box inter central 1 =============================================
-        BoxLayout:
-            size_hint_x: .7
-            orientation: 'vertical'
-            spacing: .5
+		BoxLayout:
+			size_hint_x: .7
+			orientation: 'vertical'
+			spacing: .5
+			GridLayout:
+				spacing: .5
+				size_hint_y: .1
+				rows: 2
+				cols: 2
+				Label_azul:
+					text: 'Pesquisar por Código'
+				Label_azul:
+					text: 'Pesquisar por Nome'
+				TextInput:
+					id: pesquisar_codigo
+					multiline: False
+					on_text_validate: root.add_produto_codigo(self.text)
+				TextInput:
+					id: pesquisar_nome
+					multiline: False
+					on_text_validate: root.add_produto_nome(self.text)
 
-            # Grid interno
-            GridLayout:
-                spacing: .5
-                size_hint_y: .1
-                rows: 2
-                cols: 2
-
-                Label:
-                    text: 'Pesquisar Por Código'
-                
-                Label:
-                    text: 'Pesquisar Por Nome'
-                
-                TextInput:
-                    id: pesquisar_codigo
-                
-                TextInput:
-                    id: pesquisar_nome
-
-            BoxLayout:
-                size_hint_y: .8
-                orientation: 'vertical'
-            
-            BoxLayout:
-                size_hint_y: .1
-                spacing: .5
-
-                Btn_vermelho:
-                    text: 'Deletar'
-                
-                Btn_verde:
-                    text: 'Atualizar Quantidade'
-        # Fim Box inter central 1 -----------------------------------------
-
+			BoxLayout:
+				size_hint_y: .8
+				orientation: 'vertical'
+				BoxLayout:
+					size_hint_y: .05
+					spacing: .5
+					Label_azul:
+						text: 'Cod'
+						size_hint_x: .1
+					Label_azul:
+						text: 'Produto'
+						size_hint_x: .5
+					Label_azul:
+						text: 'Quantidade'
+						size_hint_x: .2
+					Label_azul:
+						text: 'Preco Cada'
+						size_hint_x: .15
+					Label_azul:
+						text: 'Preco'
+						size_hint_x: .15
+				RV:
+					id: rvs
+			BoxLayout:
+				size_hint_y: .1
+				spacing: .5
+				Btn_vermelho:
+					text: 'Deletar Produto'
+					on_release: root.deletar_produto()
+				Btn_verde:
+					text: 'Atualizar Quantidade'
+					on_release: root.trocar_produto()
+            # Fim Box inter central 1 -----------------------------------------
 
         # Box inter central 2 =============================================
-        BoxLayout:
-            size_hint_x: .3
-            canvas.before:
-                Color:
-                    rgba: hex('#A020F0')
-                Rectangle:
-                    size:self.size
-                    pos:self.pos
+		BoxLayout:
+			size_hint_x: .3
+			orientation: 'vertical'
+			canvas.before:
+				Color:
+					rgba: hex('#BCD3D2')
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			GridLayout:
+				canvas.before:
+					Color:
+						rgba: hex('#000000')
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				size_hint_y: .4
+				rows: 2
+				cols: 2
+				Label:
+					text: 'Sub-Total'
+				Label:
+					id: sub_total
+					text: '0.00'
+				Label: 
+					text: 'Total'
+				Label:
+					id: total
+					text: '0.00'
+			BoxLayout:
+				size_hint_y: .6
+				orientation: 'vertical'
+				spacing: .5
+				Label:
+					id: notificacao_erro
+					size_hint_y: .25
+				Label:
+					id: notificacao_sucesso
+					size_hint_y: .25
+				Btn_verde:
+					size_hint_y: .25
+					id: pagar
+					text: 'Pagar'
+					on_release: root.pagar()
+				Btn_verde:
+					size_hint_y: .25
+					id: nova_compra
+					text: 'Nova Compra'
+					on_release: root.nova_compra()      
         # Fim Box inter central 2 ----------------------------------------
     # Fim Box central ----------------------------------------------------
 
@@ -158,7 +256,9 @@
     # Criuma borda na parte de baixo da tela e os direitos.
     # 
     BoxLayout:
-        size_hint_y: .03
+	    size_hint_y: .03
+	    Label: 
+            text: 'Seja Bem Vindo | Luis Ramon | Todos Direitos Reservados :'
     # Fim Box rodapé -----------------------------------------------------
 
             
